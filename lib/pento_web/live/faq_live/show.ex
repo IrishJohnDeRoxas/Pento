@@ -1,7 +1,7 @@
-defmodule PentoWeb.ProductLive.Show do
+defmodule PentoWeb.FaqLive.Show do
   use PentoWeb, :live_view
 
-  alias Pento.Catalog
+  alias Pento.FAQ
 
   @impl true
   def mount(_params, _session, socket) do
@@ -13,10 +13,9 @@ defmodule PentoWeb.ProductLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:dev_name, "Irish John De Roxas")
-     |> assign(:product, Catalog.get_product!(id))}
+     |> assign(:faq, FAQ.get_faq!(id))}
   end
 
-  defp page_title(:show), do: "Show Product"
-  defp page_title(:edit), do: "Edit Product"
+  defp page_title(:show), do: "Show Faq"
+  defp page_title(:edit), do: "Edit Faq"
 end
