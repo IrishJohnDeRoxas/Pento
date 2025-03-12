@@ -15,6 +15,11 @@
   <:item title="Unit price">{@product.unit_price}</:item>
   <:item title="Sku">{@product.sku}</:item>
 </.list>
+<%= if @product.image_upload do %>
+  <div>
+    <img alt="product image" width="200" src={@product.image_upload} />
+  </div>
+<% end %>
 
 <.back navigate={~p"/products"}>Back to products</.back>
 

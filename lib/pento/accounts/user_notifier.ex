@@ -76,4 +76,24 @@ defmodule Pento.Accounts.UserNotifier do
     ==============================
     """)
   end
+
+  @doc """
+  Deliver promotion.
+  """
+  def deliver_promotion(user, url) do
+    deliver(user.email, "You have been refered by someone", """
+
+    ==============================
+
+    Hi #{user.first_name},
+
+    You can claim the promo 10% off of your first game purchase by visiting the URL below:
+
+    #{url}
+
+    If you dont have an account with us, please ignore this.
+
+    ==============================
+    """)
+  end
 end

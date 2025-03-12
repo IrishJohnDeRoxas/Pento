@@ -1,0 +1,14 @@
+<.header>
+  Search product via sku
+  <:subtitle>sku is from embeded schema</:subtitle>
+</.header>
+
+<div>
+  <.simple_form for={@form} id="embed-search-form" phx-change="validate" phx-submit="save">
+    <.input field={@form[:sku]} type="number" label="Sku" phx-debounce="blur" />
+
+    <:actions>
+      <.button phx-disable-with="Searching...">Search</.button>
+    </:actions>
+  </.simple_form>
+</div>
