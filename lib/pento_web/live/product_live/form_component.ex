@@ -28,14 +28,16 @@ defmodule PentoWeb.ProductLive.FormComponent do
           step="any"
           phx-debounce="blur"
         />
-        <.input field={@form[:sku]} type="number" label="Sku" />
+        <.input field={@form[:sku]} type="text" label="Sku" phx-debounce="blur" />
 
         <div phx-drop-target={@uploads.image.ref}>
           <.label>Image</.label>
           <.live_file_input upload={@uploads.image} />
         </div>
         <:actions>
-          <.button phx-disable-with="Saving...">Save Product</.button>
+          <.button disable_with="Saving...">
+            Save
+          </.button>
         </:actions>
       </.simple_form>
 

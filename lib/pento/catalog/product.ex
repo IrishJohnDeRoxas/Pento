@@ -8,7 +8,7 @@ defmodule Pento.Catalog.Product do
     field :name, :string
     field :description, :string
     field :unit_price, :float
-    field :sku, :integer
+    field :sku, :string
     field :image_upload, :string
 
     timestamps(type: :utc_datetime)
@@ -20,6 +20,7 @@ defmodule Pento.Catalog.Product do
     |> cast(attrs, [:name, :description, :unit_price, :sku, :image_upload])
     |> validate_required([:name, :description, :unit_price, :sku])
     |> unique_constraint(:sku)
+    |> validate_length(:sku, min: 7)
     |> validate_number(:unit_price, greater_than: 0.0)
   end
 
