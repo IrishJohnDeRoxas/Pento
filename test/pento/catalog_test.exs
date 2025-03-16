@@ -25,14 +25,14 @@ defmodule Pento.CatalogTest do
         name: "some name",
         description: "some description",
         unit_price: 120.5,
-        sku: 42
+        sku: "some sku"
       }
 
       assert {:ok, %Product{} = product} = Catalog.create_product(valid_attrs)
       assert product.name == "some name"
       assert product.description == "some description"
       assert product.unit_price == 120.5
-      assert product.sku == 42
+      assert product.sku == "some sku"
     end
 
     test "create_product/1 with invalid data returns error changeset" do
@@ -46,14 +46,14 @@ defmodule Pento.CatalogTest do
         name: "some updated name",
         description: "some updated description",
         unit_price: 456.7,
-        sku: 43
+        sku: "some updated sku"
       }
 
       assert {:ok, %Product{} = product} = Catalog.update_product(product, update_attrs)
       assert product.name == "some updated name"
       assert product.description == "some updated description"
       assert product.unit_price == 456.7
-      assert product.sku == 43
+      assert product.sku == "some updated sku"
     end
 
     test "update_product/2 with invalid data returns error changeset" do

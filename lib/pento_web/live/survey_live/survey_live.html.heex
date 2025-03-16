@@ -1,0 +1,15 @@
+<section>
+  <Component.hero content="Survey">
+    Please fill out our survey
+  </Component.hero>
+  <TitleAndHeader.asdf heading="Survey2">
+    Please fill out our survey
+  </TitleAndHeader.asdf>
+  <%= if @demographic do %>
+    <Show.details demographic={@demographic} />
+  <% else %>
+    <h2>Demographic Form coming soon!</h2>
+  <% end %>
+
+  <br />
+</section>
