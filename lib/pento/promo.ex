@@ -9,11 +9,11 @@ defmodule Pento.Promo do
   def send_promo(recipient, attrs) do
     # send email to promo recipient
     # exercise for the reader
-    changeset = Recipient.changeset(recipient, attrs) |> IO.inspect()
+    changeset = Recipient.changeset(recipient, attrs)
 
     case changeset.valid? do
       true ->
-        recipient = struct(Pento.Promo.Recipient, changeset.changes) |> IO.inspect()
+        recipient = struct(Pento.Promo.Recipient, changeset.changes)
         UserNotifier.deliver_promotion(recipient, "http://localhost:4000/promo")
         {:ok, %Recipient{}}
 
