@@ -2,9 +2,14 @@ defmodule Pento.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @roles [
+    :admin,
+    :user
+  ]
   schema "users" do
     field :username, :string
     field :email, :string
+    field :role, Ecto.Enum, values: @roles, default: :user
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
@@ -38,7 +43,7 @@ defmodule Pento.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :username])
+    |> cast(attrs, [:email, :password, :username, :role])
     |> unique_constraint(:username)
     |> validate_email(opts)
     |> validate_password(opts)

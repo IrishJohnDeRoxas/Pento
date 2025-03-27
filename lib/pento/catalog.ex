@@ -4,9 +4,10 @@ defmodule Pento.Catalog do
   """
 
   import Ecto.Query, warn: false
+  alias Ecto.Multi
   alias Pento.Repo
-
   alias Pento.Catalog.Product
+  alias Pento.Survey.Rating
 
   @doc """
   Returns the list of products.
@@ -91,7 +92,19 @@ defmodule Pento.Catalog do
 
   """
   def delete_product(%Product{} = product) do
-    Repo.delete(product)
+    Multi.new()
+    |> Multi.run(:rating_ids, fn _repo, _changes ->
+      rating_ids =
+        Rating.Query.rating_ids_for_product(product)
+        |> Repo.all()
+
+      {:ok, rating_ids}
+    end)
+    |> Multi.delete_all(:ratings, fn %{rating_ids: rating_ids} ->
+      Rating.Query.ratings_by_ids(rating_ids)
+    end)
+    |> Multi.delete(:product, product)
+    |> Repo.transaction()
   end
 
   @doc """
@@ -136,5 +149,27 @@ defmodule Pento.Catalog do
   """
   def change_product_unit_price(%Product{} = product, attrs \\ %{}) do
     Product.unit_price_changeset(product, attrs)
+  end
+
+  def products_with_average_ratings do
+    Product.Query.with_average_ratings()
+    |> Repo.all()
+  end
+
+  def products_with_average_ratings(%{
+        age_group_filter: age_group_filter,
+        gender_filter: gender_filter
+      }) do
+    Product.Query.with_average_ratings()
+    |> Product.Query.join_users()
+    |> Product.Query.join_demographics()
+    |> Product.Query.filter_by_age_group(age_group_filter)
+    |> Product.Query.filter_by_gender(gender_filter)
+    |> Repo.all()
+  end
+
+  def products_with_zero_ratings do
+    Product.Query.with_zero_ratings()
+    |> Repo.all()
   end
 end

@@ -85,6 +85,14 @@ defmodule PentoWeb.Router do
       live "/faqs/:id", FaqLive.Show, :show
       live "/faqs/:id/show/edit", FaqLive.Show, :edit
     end
+
+    live_session :require_authenticated_admin_user,
+      on_mount: [
+        {PentoWeb.UserAuth, :ensure_authenticated},
+        {PentoWeb.UserAuth, :authenticate_admin_user}
+      ] do
+      live "/admin/dashboard", Admin.DashboardLive
+    end
   end
 
   scope "/", PentoWeb do

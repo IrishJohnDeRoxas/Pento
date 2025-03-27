@@ -167,6 +167,21 @@ defmodule PentoWeb.UserAuth do
     end
   end
 
+  def on_mount(:authenticate_admin_user, _params, _session, socket) do
+    current_user = socket.assigns.current_user
+
+    if current_user.role == :admin do
+      {:cont, socket}
+    else
+      socket =
+        socket
+        |> Phoenix.LiveView.put_flash(:error, "You must be a admin to access this page.")
+        |> Phoenix.LiveView.redirect(to: ~p"/guess")
+
+      {:halt, socket}
+    end
+  end
+
   def on_mount(:redirect_if_user_is_authenticated, _params, session, socket) do
     socket =
       socket
@@ -218,6 +233,20 @@ defmodule PentoWeb.UserAuth do
       |> put_flash(:error, "You must log in to access this page.")
       |> maybe_store_return_to()
       |> redirect(to: ~p"/users/log_in")
+      |> halt()
+    end
+  end
+
+  def require_authenticated_admin_user(conn, _opts) do
+    current_user = conn.assigns[:current_user]
+
+    if current_user and current_user.role == :admin do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must be admin to access this page.")
+      |> maybe_store_return_to()
+      |> redirect(to: ~p"/guess")
       |> halt()
     end
   end
