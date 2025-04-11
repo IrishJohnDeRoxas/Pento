@@ -1,6 +1,5 @@
 <.header>
   Product {@product.id}
-  <:subtitle>This is a product record from your database. By: {@dev_name}</:subtitle>
 
   <:actions>
     <.link patch={~p"/products/#{@product}/show/edit"} phx-click={JS.push_focus()}>
